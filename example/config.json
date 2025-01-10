@@ -1,0 +1,64 @@
+{
+  "routes": [
+    {
+      "downstream": {
+        "host": "127.0.0.1",
+        "port": 8000,
+        "route": "/blogs"
+      },
+      "upstream": "/api/service1",
+      "methods": ["GET", "POST"],
+      "metadata": {
+        "service_name": "Service1",
+        "auth_required": true
+      },
+      "middleware": ["LoggingMiddleware"]
+    },
+    {
+      "downstream": {
+        "host": "127.0.0.1",
+        "port": 8000,
+        "route": "/blogs/{id}"
+      },
+      "upstream": "/api/service1/{id}",
+      "methods": ["GET", "POST"],
+      "metadata": {
+        "service_name": "Service1",
+        "auth_required": true
+      },
+      "middleware": ["LoggingMiddleware"],
+      "auth": {
+        "key": "d3f6091057b34c9400a30400dae1910a428e69f29bba03ed77b5fe464b17dcd7",
+        "roleClaimKey": "role",
+        "allowedValues": ["koskesh", "admin"]
+      }
+    },
+    {
+      "downstream": {
+        "host": "service2.internal",
+        "port": 8081,
+        "route": "/data"
+      },
+      "upstream": "/api/service2",
+      "methods": ["GET"],
+      "metadata": {
+        "service_name": "Service2"
+      },
+      "middleware": ["LoggingMiddleware"]
+    },
+    {
+      "downstream": {
+        "host": "127.0.0.1",
+        "port": 8000,
+        "route": "/blogs/{id}/detail/{detail}"
+      },
+      "upstream": "/api/service1/{id}/detail/{detail}",
+      "methods": ["GET", "POST"],
+      "metadata": {
+        "service_name": "Service1",
+        "auth_required": true
+      },
+      "middleware": ["LoggingMiddleware"]
+    }
+  ]
+}
